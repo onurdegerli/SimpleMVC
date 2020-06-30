@@ -1,0 +1,59 @@
+version: '3.7'
+services:
+  web:
+    container_name: simple_mvc_web
+    image: nginx
+    ports:
+      - "80:81"
+    volumes:
+      - ./app:/var/www/html
+      - ./conf.d:/etc/nginx/conf.d
+    links:
+      - php
+    networks:
+      - simple_mvc
+  php:
+    container_name: simple_mvc_php
+    build:
+      context: ./
+      dockerfile: Dockerfile-phpfpm
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - simple_mvc
+    links:
+      - db
+    depends_on:
+      - db
+    expose:
+      - 9000
+  db:
+    image: mysql:5.7
+    container_name: simple_mvc_db
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: simple_mvc
+    networks:
+      - simple_mvc
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: simple_mvc_pma
+    restart: always
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "8184:80"
+    environment:
+      MYSQL_USERNAME: root
+      MYSQL_ROOT_PASSWORD: root
+      PMA_ARBITRARY: 1
+    networks:
+      - simple_mvc
+networks:
+  simple_mvc:
+    driver: bridge
