@@ -4,7 +4,10 @@ namespace App\Models;
 
 class Order
 {
-    public const TABLE_NAME = 'orders';
+    public const TABLE = 'orders';
 
-    private int $id;
+    public int $id;
+    public int $purchase_at;
+    public int $country_id;
+    public int $device_id;
 }

@@ -20,4 +20,9 @@ class PostgresqlRepository implements Repository
     {
         return [];
     }
+
+    public function get(string $table, int $id): array
+    {
+        return [];
+    }
 }

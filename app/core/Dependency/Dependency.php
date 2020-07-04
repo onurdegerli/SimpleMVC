@@ -2,9 +2,10 @@
 
 namespace Core\Dependency;
 
+use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
+use App\Services\CustomerService;
 use App\Services\OrderService;
-use Core\Databases\BaseRepository;
 use Core\Databases\ConnectionFactory;
 use Core\Databases\RepositoryFactory;
 use Core\Exceptions\DatabaseException;
@@ -49,9 +50,26 @@ class Dependency
         );
 
         $container->set(
+            'CustomerRepository',
+            function () use ($databaseRepository) {
+                return new CustomerRepository($databaseRepository);
+            }
+        );
+
+        $container->set(
             'OrderService',
             function () use ($container) {
-                return new OrderService($container->get('OrderRepository'));
+                return new OrderService(
+                    $container->get('OrderRepository'),
+                    $container->get('CustomerRepository')
+                );
+            }
+        );
+
+        $container->set(
+            'CustomerService',
+            function () use ($container) {
+                return new CustomerService($container->get('CustomerRepository'));
             }
         );
 
