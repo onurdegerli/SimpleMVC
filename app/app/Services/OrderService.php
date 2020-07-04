@@ -2,9 +2,19 @@
 
 namespace App\Services;
 
+use App\Repositories\OrderRepository;
+
 class OrderService
 {
-    public function __construct()
+    private OrderRepository $orderRepository;
+
+    public function __construct(OrderRepository $orderRepository)
     {
+        $this->orderRepository = $orderRepository;
+    }
+
+    public function getAll(): array
+    {
+        return $this->orderRepository->getAll();
     }
 }

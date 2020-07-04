@@ -4,7 +4,9 @@ namespace Core\Dependency;
 
 use App\Repositories\OrderRepository;
 use App\Services\OrderService;
+use Core\Databases\BaseRepository;
 use Core\Databases\ConnectionFactory;
+use Core\Databases\RepositoryFactory;
 use Core\Exceptions\DatabaseException;
 use DI\Container;
 use DI\ContainerBuilder;
@@ -13,8 +15,7 @@ use DI\ContainerBuilder;
  * Class Dependency
  * @package Core\Dependency
  *
- * TODO: This is the only 3rd party application is installed.
- * Also. it is possible to implement a self-made DI-container.
+ * TODO: Implement a dependency injection container.
  */
 class Dependency
 {
@@ -38,10 +39,19 @@ class Dependency
             )
         );
 
+        $databaseRepository = (new RepositoryFactory())->get($databaseConnection);
+
+        $container->set(
+            'OrderRepository',
+            function () use ($databaseRepository) {
+                return new OrderRepository($databaseRepository);
+            }
+        );
+
         $container->set(
             'OrderService',
             function () use ($container) {
-                return new OrderService(new OrderRepository($container->get('db')));
+                return new OrderService($container->get('OrderRepository'));
             }
         );
 

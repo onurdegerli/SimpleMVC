@@ -2,8 +2,8 @@
 
 namespace Core\Databases;
 
-use Core\Databases\Mysql\MysqlFactory;
-use Core\Databases\Postgresql\PostgresqlFactory;
+use Core\Databases\Mysql\Mysql;
+use Core\Databases\Postgresql\Postgresql;
 use Core\Exceptions\DatabaseException;
 
 /**
@@ -12,14 +12,14 @@ use Core\Exceptions\DatabaseException;
  */
 class ConnectionFactory
 {
-    public static function get(string $type)
+    public static function get(string $type): Database
     {
         if ($type === 'mysql') {
-            return (new MysqlFactory())->get();
+            return new Mysql();
         }
 
         if ($type === 'postgresql') {
-            return (new PostgresqlFactory())->get();
+            return new Postgresql();
         }
 
         throw new DatabaseException('No database type specified.');

@@ -3,6 +3,7 @@
 namespace Core\Databases\Mysql;
 
 use Core\Databases\Database;
+use Core\Databases\Repository;
 use Core\Exceptions\DatabaseException;
 use Exception;
 use PDO;
@@ -33,5 +34,10 @@ final class Mysql implements Database
         }
 
         return self::$db;
+    }
+
+    public function getRepository(): Repository
+    {
+        return new MysqlRepository(self::$db);
     }
 }

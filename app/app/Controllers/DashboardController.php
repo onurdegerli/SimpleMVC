@@ -22,6 +22,8 @@ class DashboardController
      */
     public function mainAction(): Response
     {
+        $data = $this->orderService->getAll();
+
         return (new Response)
             ->responseHtml(
                 'dashboard/main',
