@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Services\Structures\ChartDataStructure;
 use App\Services\Structures\ChartStructure;
 
 class ChartService

@@ -2,20 +2,20 @@
 
 namespace App\Services\MoneyFormatter\Formatters;
 
-use App\Services\MoneyFormatter\Interfaces\BaseMoneyFormatterInterface;
 use App\Services\MoneyFormatter\Interfaces\MoneyFormatterInterface;
+use App\Services\MoneyFormatter\Interfaces\MetadataInterface;
 use NumberFormatter;
 
-class BaseNumberFormatter extends MoneyFormatterAbstract implements BaseMoneyFormatterInterface, MoneyFormatterInterface
+class FooMoneyFormatter extends MoneyFormatterAbstract implements MoneyFormatterInterface, MetadataInterface
 {
-    public function setLocale(string $locale): MoneyFormatterInterface
+    public function setLocale(string $locale): MetadataInterface
     {
         $this->locale = $locale;
 
         return $this;
     }
 
-    public function setCurrency(string $currency): MoneyFormatterInterface
+    public function setCurrency(string $currency): MetadataInterface
     {
         $this->currency = $currency;
 

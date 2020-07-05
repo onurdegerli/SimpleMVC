@@ -170,7 +170,8 @@ class DataSeeder extends AbstractSeed
         }
     }
 
-    function getUniqueRandomNumbersWithinRange($min, $max, $quantity) {
+    function getUniqueRandomNumbersWithinRange($min, $max, $quantity)
+    {
         $numbers = range($min, $max);
         shuffle($numbers);
 

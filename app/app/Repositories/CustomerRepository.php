@@ -25,7 +25,9 @@ class CustomerRepository extends BaseRepository
     {
         $data = $this->repository
             ->customQuery(
-                'select count(1) as total from customers where created_at >= :fromDate and created_at <= :toDate',
+                'SELECT COUNT(1) AS total 
+                        FROM customers 
+                        WHERE created_at >= :fromDate AND created_at <= :toDate',
                 [
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,
@@ -40,7 +42,7 @@ class CustomerRepository extends BaseRepository
     {
         return $this->repository
             ->customQuery(
-                'SELECT COALESCE(count(1), 0) AS total, DATE(created_at) AS grouped_date 
+                'SELECT COUNT(1) AS total, DATE(created_at) AS grouped_date 
                         FROM customers 
                         WHERE created_at >= :fromDate and created_at <= :toDate
                         GROUP BY grouped_date',

@@ -7,7 +7,7 @@ use App\Repositories\OrderRepository;
 use App\Services\ChartService;
 use App\Services\CustomerService;
 use App\Services\DateService;
-use App\Services\MoneyFormatter\Formatters\BaseNumberFormatter;
+use App\Services\MoneyFormatter\Formatters\FooMoneyFormatter;
 use App\Services\OrderService;
 use Core\Databases\ConnectionFactory;
 use Core\Databases\RepositoryFactory;
@@ -65,7 +65,7 @@ class Dependency
                 return new OrderService(
                     $container->get('OrderRepository'),
                     $container->get('CustomerRepository'),
-                    new BaseNumberFormatter()
+                    new FooMoneyFormatter()
                 );
             }
         );

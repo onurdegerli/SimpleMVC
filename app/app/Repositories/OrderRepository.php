@@ -25,9 +25,9 @@ class OrderRepository extends BaseRepository
     {
         return $this->repository
             ->customQuery(
-                'SELECT IFNULL(count(1), 0) AS total, DATE(purchase_at) AS grouped_date 
+                'SELECT COUNT(1) AS total, DATE(purchase_at) AS grouped_date 
                         FROM orders 
-                        WHERE purchase_at >= :fromDate and purchase_at <= :toDate
+                        WHERE purchase_at >= :fromDate AND purchase_at <= :toDate
                         GROUP BY grouped_date',
                 [
                     'fromDate' => $fromDate,
@@ -41,7 +41,9 @@ class OrderRepository extends BaseRepository
     {
         $data = $this->repository
             ->customQuery(
-                'select count(1) as total from orders where purchase_at >= :fromDate and purchase_at <= :toDate',
+                'SELECT COUNT(1) AS total 
+                        FROM orders 
+                        WHERE purchase_at >= :fromDate AND purchase_at <= :toDate',
                 [
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,
@@ -56,11 +58,11 @@ class OrderRepository extends BaseRepository
     {
         $data = $this->repository
             ->customQuery(
-                'select sum(oi.quantity * i.price) as total 
-                        from order_items oi 
-                        join items i on oi.item_id = i.id
-                        join orders o on oi.order_id = o.id
-                        where o.purchase_at >= :fromDate and o.purchase_at <= :toDate',
+                'SELECT SUM(oi.quantity * i.price) AS total 
+                        FROM order_items oi 
+                        JOIN items i ON oi.item_id = i.id
+                        JOIN orders o ON oi.order_id = o.id
+                        WHERE o.purchase_at >= :fromDate AND o.purchase_at <= :toDate',
                 [
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,

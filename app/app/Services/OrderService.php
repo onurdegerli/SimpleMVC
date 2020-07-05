@@ -5,19 +5,19 @@ namespace App\Services;
 use App\Models\Order;
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
-use App\Services\MoneyFormatter\Interfaces\BaseMoneyFormatterInterface;
+use App\Services\MoneyFormatter\Interfaces\MoneyFormatterInterface;
 use ReflectionException;
 
 class OrderService
 {
     private OrderRepository $orderRepository;
     private CustomerRepository $customerRepository;
-    private BaseMoneyFormatterInterface $moneyFormatter;
+    private MoneyFormatterInterface $moneyFormatter;
 
     public function __construct(
         OrderRepository $orderRepository,
         CustomerRepository $customerRepository,
-        BaseMoneyFormatterInterface $moneyFormatter
+        MoneyFormatterInterface $moneyFormatter
     ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;

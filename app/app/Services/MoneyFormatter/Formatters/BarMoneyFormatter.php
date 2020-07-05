@@ -2,9 +2,9 @@
 
 namespace App\Services\MoneyFormatter\Formatters;
 
-use App\Services\MoneyFormatter\Interfaces\BaseMoneyFormatterInterface;
+use App\Services\MoneyFormatter\Interfaces\MoneyFormatterInterface;
 
-class OtherNumberFormatter implements BaseMoneyFormatterInterface
+class BarMoneyFormatter implements MoneyFormatterInterface
 {
     public function format(float $number): string
     {
