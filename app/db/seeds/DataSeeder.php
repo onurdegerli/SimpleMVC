@@ -13,18 +13,21 @@ class DataSeeder extends AbstractSeed
     private Table $devices;
     private Table $items;
     private Table $orderItems;
+    private string $today;
 
     public function run()
     {
+        $this->today = date('Y-m-d');
+
         $this->setTables();
         $this->truncateTables();
 
         $faker = Faker\Factory::create();
         $this->createCountries($faker);
         $this->createDevices($faker);
-        $this->createCustomers($faker);
+        $customerIds = $this->createCustomers($faker);
         $this->createItems($faker);
-        $this->createOrders($faker);
+        $this->createOrders($customerIds);
     }
 
     private function setTables()
@@ -70,19 +73,36 @@ class DataSeeder extends AbstractSeed
         }
     }
 
-    private function createCustomers(\Faker\Generator $faker)
+    private function createCustomers(\Faker\Generator $faker): array
     {
-        for ($i = 1; $i <= self::BASE_DATA_LIMIT; $i++) {
-            $this->customers
-                ->insert(
-                    [
-                        'first_name' => $faker->firstName,
-                        'last_name' => $faker->lastName,
-                        'email' => $faker->email,
-                    ]
-                )
-                ->save();
+        $customerIds = [];
+        for ($day = 365; $day > 0; $day--) {
+            $daysInAgo = date('Y-m-d', strtotime($this->today . " - $day days"));
+            $customerCountPerDay = rand(0, 30);
+            for ($i = 1; $i <= $customerCountPerDay; $i++) {
+                $hour = rand(0, 23);
+                $minute = rand(0, 59);
+                $seconds = rand(0, 59);
+                $createdAt = $daysInAgo . " $hour:$minute:$seconds";
+
+                $this->customers
+                    ->insert(
+                        [
+                            'first_name' => $faker->firstName,
+                            'last_name' => $faker->lastName,
+                            'email' => $faker->email,
+                            'created_at' => $createdAt,
+                        ]
+                    )
+                    ->save();
+
+                $customerIds[] = $this->getAdapter()->getConnection()->lastInsertId();
+            }
+
+            echo "$customerCountPerDay customers at $this->today\n";
         }
+
+        return $customerIds;
     }
 
     private function createItems(\Faker\Generator $faker)
@@ -99,18 +119,22 @@ class DataSeeder extends AbstractSeed
         }
     }
 
-    private function createOrders(\Faker\Generator $faker)
+    private function createOrders(array $customerIds)
     {
-        $today = date('Y-m-d');
         for ($day = 365; $day > 0; $day--) {
-            $purchaseAt = date('Y-m-d', strtotime($today . " - $day days"));
+            $daysInAgo = date('Y-m-d', strtotime($this->today . " - $day days"));
             $orderCountPerDay = rand(0, 30);
 
             // create orders
             for ($i = 1; $i <= $orderCountPerDay; $i++) {
-                $customerId = rand(1, self::BASE_DATA_LIMIT);
+                $customerId = rand(1, count($customerIds));
                 $countryId = rand(1, self::BASE_DATA_LIMIT);
                 $deviceId = rand(1, self::BASE_DATA_LIMIT);
+
+                $hour = rand(0, 23);
+                $minute = rand(0, 59);
+                $seconds = rand(0, 59);
+                $purchaseAt = $daysInAgo . " $hour:$minute:$seconds";
 
                 $this->orders
                     ->insert(
@@ -142,7 +166,7 @@ class DataSeeder extends AbstractSeed
                 }
             }
 
-            echo "$orderCountPerDay orders at $date\n";
+            echo "$orderCountPerDay orders at $this->today\n";
         }
     }
 

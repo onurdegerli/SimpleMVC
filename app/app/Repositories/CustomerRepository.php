@@ -20,4 +20,18 @@ class CustomerRepository extends BaseRepository
 
         parent::__construct($repository);
     }
+
+    public function getCustomerCount(string $fromDate, string $toDate): int
+    {
+        $data = $this->repository
+            ->customQuery(
+                'select count(1) as total from customers where created_at >= :fromDate and created_at <= :toDate',
+                [
+                    'fromDate' => $fromDate,
+                    'toDate' => $toDate,
+                ]
+            );
+
+        return $data['total'] ?? 0;
+    }
 }

@@ -11,6 +11,8 @@ final class CreateCustomerTable extends AbstractMigration
             ->addColumn('first_name', 'string', ['limit' => 255])
             ->addColumn('last_name', 'string', ['limit' => 255])
             ->addColumn('email', 'string', ['limit' => 255])
+            ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addIndex(['created_at'], ['name' => 'idx_created_at'])
             ->create();
     }
 }

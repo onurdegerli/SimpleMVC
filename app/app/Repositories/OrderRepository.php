@@ -21,7 +21,7 @@ class OrderRepository extends BaseRepository
         parent::__construct($repository);
     }
 
-    public function getTotalOrderCount(string $fromDate, string $toDate): int
+    public function getOrderCount(string $fromDate, string $toDate): int
     {
         $data = $this->repository
             ->customQuery(
