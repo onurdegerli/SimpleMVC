@@ -12,9 +12,4 @@ class CustomerService
     {
         $this->customerRepository = $customerRepository;
     }
-
-    public function getTotalCustomerCount(): int
-    {
-        return $this->customerRepository->getCount();
-    }
 }

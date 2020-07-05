@@ -7,7 +7,7 @@ class Order
     public const TABLE = 'orders';
 
     public int $id;
-    public int $purchase_at;
     public int $country_id;
     public int $device_id;
+    public int $purchase_at;
 }

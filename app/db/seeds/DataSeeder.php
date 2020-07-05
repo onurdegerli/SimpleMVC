@@ -101,22 +101,24 @@ class DataSeeder extends AbstractSeed
 
     private function createOrders(\Faker\Generator $faker)
     {
-        $date = "2020-07-04";
+        $today = date('Y-m-d');
         for ($day = 365; $day > 0; $day--) {
-            $purchaseAt = date('Y-m-d', strtotime($date . " - $day days"));
+            $purchaseAt = date('Y-m-d', strtotime($today . " - $day days"));
             $orderCountPerDay = rand(0, 30);
 
             // create orders
             for ($i = 1; $i <= $orderCountPerDay; $i++) {
+                $customerId = rand(1, self::BASE_DATA_LIMIT);
                 $countryId = rand(1, self::BASE_DATA_LIMIT);
                 $deviceId = rand(1, self::BASE_DATA_LIMIT);
 
                 $this->orders
                     ->insert(
                         [
-                            'purchase_at' => $purchaseAt,
+                            'customer_id' => $customerId,
                             'country_id' => $countryId,
                             'device_id' => $deviceId,
+                            'purchase_at' => $purchaseAt,
                         ]
                     )
                     ->save();
@@ -147,6 +149,7 @@ class DataSeeder extends AbstractSeed
     function getUniqueRandomNumbersWithinRange($min, $max, $quantity) {
         $numbers = range($min, $max);
         shuffle($numbers);
+
         return array_slice($numbers, 0, $quantity);
     }
 }

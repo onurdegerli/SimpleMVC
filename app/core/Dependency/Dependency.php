@@ -5,6 +5,7 @@ namespace Core\Dependency;
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
 use App\Services\CustomerService;
+use App\Services\MoneyFormatter\BaseNumberFormatter;
 use App\Services\OrderService;
 use Core\Databases\ConnectionFactory;
 use Core\Databases\RepositoryFactory;
@@ -61,7 +62,8 @@ class Dependency
             function () use ($container) {
                 return new OrderService(
                     $container->get('OrderRepository'),
-                    $container->get('CustomerRepository')
+                    $container->get('CustomerRepository'),
+                    new BaseNumberFormatter()
                 );
             }
         );

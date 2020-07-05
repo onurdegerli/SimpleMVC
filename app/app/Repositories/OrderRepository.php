@@ -21,18 +21,14 @@ class OrderRepository extends BaseRepository
         parent::__construct($repository);
     }
 
-    public function getTotalRevenue(): float
+    public function getTotalRevenue(array $params = []): float
     {
         $data = $this->repository
             ->getCustomQuery(
                 'select sum(oi.quantity * i.price) as total 
                         from order_items oi 
                         join items i on oi.item_id = i.id
-                        join orders o on oi.order_id = o.id
-                        where o.id = :id',
-                [
-                    'id' => 3
-                ]
+                        join orders o on oi.order_id = o.id'
             );
 
         return $data['total'] ?? 0;

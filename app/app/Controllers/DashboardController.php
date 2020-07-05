@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Services\CustomerService;
+use App\Repositories\CustomerRepository;
 use App\Services\OrderService;
 use App\Services\Structures\CustomerStructure;
 use App\Services\Structures\OrderStructure;
@@ -13,12 +13,12 @@ use DI\Container;
 class DashboardController
 {
     private OrderService $orderService;
-    private CustomerService $customerService;
+    private CustomerRepository $customerRepository;
 
     public function __construct(Container $container)
     {
         $this->orderService = $container->get('OrderService');
-        $this->customerService = $container->get('CustomerService');
+        $this->customerRepository = $container->get('CustomerRepository');
     }
 
     /**
@@ -28,17 +28,19 @@ class DashboardController
     public function mainAction(): Response
     {
         $orderStructure = new OrderStructure();
-        $customerStructure = new CustomerStructure();
-
         $orderStructure->totalOrder = $this->orderService->getTotalOrderCount();
         $orderStructure->totalRevenue = $this->orderService->getTotalRevenue();
 
-        $customerStructure->totalCustomer = $this->customerService->getTotalCustomerCount();
-dd($orderStructure);
+        $customerStructure = new CustomerStructure();
+        $customerStructure->totalCustomer = $this->customerRepository->getCount();
+
         return (new Response)
             ->responseHtml(
                 'dashboard/main',
-                []
+                [
+                    'orderStructure' => $orderStructure,
+                    'customerStructure' => $customerStructure,
+                ]
             );
     }
 }
