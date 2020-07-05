@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
 use App\Services\MoneyFormatter\Interfaces\MoneyFormatterInterface;
-use ReflectionException;
 
 class OrderService
 {
