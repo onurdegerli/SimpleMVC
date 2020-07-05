@@ -52,6 +52,8 @@
                 <h1 class="h2">Dashboard</h1>
             </div>
 
+            <h5>From <?=$orderStructure->fromDate ?> to <?=$orderStructure->toDate ?></h5>
+
             <ul class="list-group">
                 <li class="list-group-item"><strong>Total Order:</strong> <?= $orderStructure->totalOrder; ?></li>
                 <li class="list-group-item"><strong>Total Revenue:</strong> <?= $orderStructure->totalRevenue; ?></li>
@@ -59,6 +61,25 @@
             </ul>
 
             <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+            <h6>More statistics</h6>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="<?=getenv('DOMAIN') ?>">
+                        Last month
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="<?=getenv('DOMAIN') ?>/?from=2020-05-05&to=2020-06-05">
+                        From 2020-05-05 to 2020-06-05
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="<?=getenv('DOMAIN') ?>/?from=2020-01-02&to=2020-02-02">
+                        From 2020-01-02 to 2020-02-02
+                    </a>
+                </li>
+            </ul>
         </main>
     </div>
 </div>

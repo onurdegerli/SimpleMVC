@@ -46,7 +46,7 @@ class MysqlRepository implements Repository
         return $stmt->rowCount();
     }
 
-    public function getCustomQuery(string $query, array $params = [])
+    public function customQuery(string $query, array $params = [])
     {
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);

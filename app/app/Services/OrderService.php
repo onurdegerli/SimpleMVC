@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
-use App\Services\MoneyFormatter\BaseMoneyFormatterInterface;
+use App\Services\MoneyFormatter\Interfaces\BaseMoneyFormatterInterface;
 use ReflectionException;
 
 class OrderService
@@ -24,15 +24,16 @@ class OrderService
         $this->moneyFormatter = $moneyFormatter;
     }
 
-    public function getTotalOrderCount(): int
+    public function getTotalOrderCount(string $from, string $to): int
     {
-        return $this->orderRepository->getCount();
+        return $this->orderRepository->getTotalOrderCount($from, $to);
     }
 
-    public function getTotalRevenue(): string
+    public function getTotalRevenue(string $from, string $to): string
     {
-        return $this->moneyFormatter
-            ->format($this->orderRepository->getTotalRevenue());
+        $totalRevenue = $this->orderRepository->getTotalRevenue($from, $to);
+
+        return $this->moneyFormatter->format($totalRevenue);
     }
 
     /**
@@ -53,5 +54,10 @@ class OrderService
     public function get(int $orderId): Order
     {
         return $this->orderRepository->get($orderId);
+    }
+
+    public function getOneMonthAgoDate(): string
+    {
+        return date('Y-m-d', strtotime(date('Y-m-d') . " - 1 month"));
     }
 }

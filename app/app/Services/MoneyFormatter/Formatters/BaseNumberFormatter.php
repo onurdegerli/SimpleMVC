@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Services\MoneyFormatter;
+namespace App\Services\MoneyFormatter\Formatters;
 
+use App\Services\MoneyFormatter\Interfaces\BaseMoneyFormatterInterface;
+use App\Services\MoneyFormatter\Interfaces\MoneyFormatterInterface;
 use NumberFormatter;
 
 class BaseNumberFormatter extends MoneyFormatterAbstract implements BaseMoneyFormatterInterface, MoneyFormatterInterface
