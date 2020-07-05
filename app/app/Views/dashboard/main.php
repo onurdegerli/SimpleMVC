@@ -3,6 +3,7 @@
 /**
  * OrderStructure $orderStructure
  * CustomerStructure $customerStructure
+ * ChartStructure $chartStructure
  */
 
 ?>
@@ -52,34 +53,77 @@
                 <h1 class="h2">Dashboard</h1>
             </div>
 
-            <h5>From <?=$orderStructure->fromDate ?> to <?=$orderStructure->toDate ?></h5>
+            <h5>From <?= $orderStructure->fromDate ?> to <?= $orderStructure->toDate ?></h5>
 
             <ul class="list-group">
                 <li class="list-group-item"><strong>Total Order:</strong> <?= $orderStructure->totalOrder; ?></li>
                 <li class="list-group-item"><strong>Total Revenue:</strong> <?= $orderStructure->totalRevenue; ?></li>
-                <li class="list-group-item"><strong>Total Customer:</strong> <?= $customerStructure->totalCustomer; ?></li>
+                <li class="list-group-item"><strong>Total Customer:</strong> <?= $customerStructure->totalCustomer; ?>
+                </li>
             </ul>
 
-            <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+            <canvas class="my-4 w-100" id="statistics" width="900" height="380"></canvas>
 
             <h6>More statistics</h6>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="<?=getenv('DOMAIN') ?>">
+                    <a href="<?= getenv('DOMAIN') ?>">
                         Last month
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?=getenv('DOMAIN') ?>/?from=2020-05-05&to=2020-06-05">
+                    <a href="<?= getenv('DOMAIN') ?>/?from=2020-05-05&to=2020-06-05">
                         From 2020-05-05 to 2020-06-05
                     </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="<?=getenv('DOMAIN') ?>/?from=2020-01-02&to=2020-02-02">
+                    <a href="<?= getenv('DOMAIN') ?>/?from=2020-01-02&to=2020-02-02">
                         From 2020-01-02 to 2020-02-02
+                    </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="<?= getenv('DOMAIN') ?>/?from=2019-07-06&to=2019-08-05">
+                        From 2019-07-06 to 2019-08-05
                     </a>
                 </li>
             </ul>
         </main>
     </div>
 </div>
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById('statistics')
+    // eslint-disable-next-line no-unused-vars
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: <?=json_encode($chartStructure->labels) ?>,
+        datasets: <?=json_encode($chartStructure->dataset) ?>,
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Monthly Statistics'
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        },
+        legend: {
+          display: false
+        }
+      }
+    })
+  });
+</script>

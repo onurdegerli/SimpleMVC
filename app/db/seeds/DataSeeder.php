@@ -78,7 +78,7 @@ class DataSeeder extends AbstractSeed
         $customerIds = [];
         for ($day = 365; $day > 0; $day--) {
             $daysInAgo = date('Y-m-d', strtotime($this->today . " - $day days"));
-            $customerCountPerDay = rand(0, 30);
+            $customerCountPerDay = rand(1, 30);
             for ($i = 1; $i <= $customerCountPerDay; $i++) {
                 $hour = rand(0, 23);
                 $minute = rand(0, 59);
@@ -123,7 +123,7 @@ class DataSeeder extends AbstractSeed
     {
         for ($day = 365; $day > 0; $day--) {
             $daysInAgo = date('Y-m-d', strtotime($this->today . " - $day days"));
-            $orderCountPerDay = rand(0, 30);
+            $orderCountPerDay = rand(1, 30);
 
             // create orders
             for ($i = 1; $i <= $orderCountPerDay; $i++) {

@@ -21,6 +21,22 @@ class OrderRepository extends BaseRepository
         parent::__construct($repository);
     }
 
+    public function getOrdersBetweenDates(string $fromDate, string $toDate): array
+    {
+        return $this->repository
+            ->customQuery(
+                'SELECT IFNULL(count(1), 0) AS total, DATE(purchase_at) AS grouped_date 
+                        FROM orders 
+                        WHERE purchase_at >= :fromDate and purchase_at <= :toDate
+                        GROUP BY grouped_date',
+                [
+                    'fromDate' => $fromDate,
+                    'toDate' => $toDate,
+                ]
+            )
+            ->all();
+    }
+
     public function getOrderCount(string $fromDate, string $toDate): int
     {
         $data = $this->repository
@@ -30,7 +46,8 @@ class OrderRepository extends BaseRepository
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,
                 ]
-            );
+            )
+            ->one();
 
         return $data['total'] ?? 0;
     }
@@ -48,7 +65,8 @@ class OrderRepository extends BaseRepository
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,
                 ]
-            );
+            )
+            ->one();
 
         return $data['total'] ?? 0;
     }

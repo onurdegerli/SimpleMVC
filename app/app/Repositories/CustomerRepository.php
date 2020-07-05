@@ -30,8 +30,25 @@ class CustomerRepository extends BaseRepository
                     'fromDate' => $fromDate,
                     'toDate' => $toDate,
                 ]
-            );
+            )
+            ->one();
 
         return $data['total'] ?? 0;
+    }
+
+    public function getCustomersBetweenDates(string $fromDate, string $toDate)
+    {
+        return $this->repository
+            ->customQuery(
+                'SELECT COALESCE(count(1), 0) AS total, DATE(created_at) AS grouped_date 
+                        FROM customers 
+                        WHERE created_at >= :fromDate and created_at <= :toDate
+                        GROUP BY grouped_date',
+                [
+                    'fromDate' => $fromDate,
+                    'toDate' => $toDate,
+                ]
+            )
+            ->all();
     }
 }

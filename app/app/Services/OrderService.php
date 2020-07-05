@@ -31,13 +31,17 @@ class OrderService
         return $this->moneyFormatter->format($totalRevenue);
     }
 
-    /**
-     * @param int $orderId
-     * @return Order
-     * @throws ReflectionException
-     */
-    public function get(int $orderId): Order
+    public function getOrdersWithDateMapping($from, $to): array
     {
-        return $this->orderRepository->get($orderId);
+        $data = $this->orderRepository->getOrdersBetweenDates($from, $to);
+
+        return array_flatten(
+            array_map(
+                static function ($row) {
+                    return [$row['grouped_date'] => $row['total']];
+                },
+                $data
+            )
+        );
     }
 }

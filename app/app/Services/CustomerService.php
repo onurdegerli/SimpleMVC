@@ -12,4 +12,18 @@ class CustomerService
     {
         $this->customerRepository = $customerRepository;
     }
+
+    public function getCustomersWithDateMapping($from, $to): array
+    {
+        $data = $this->customerRepository->getCustomersBetweenDates($from, $to);
+
+        return array_flatten(
+            array_map(
+                static function ($row) {
+                    return [$row['grouped_date'] => $row['total']];
+                },
+                $data
+            )
+        );
+    }
 }

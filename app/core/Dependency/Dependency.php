@@ -4,6 +4,7 @@ namespace Core\Dependency;
 
 use App\Repositories\CustomerRepository;
 use App\Repositories\OrderRepository;
+use App\Services\ChartService;
 use App\Services\CustomerService;
 use App\Services\DateService;
 use App\Services\MoneyFormatter\Formatters\BaseNumberFormatter;
@@ -80,6 +81,13 @@ class Dependency
             'DateService',
             function () {
                 return new DateService();
+            }
+        );
+
+        $container->set(
+            'ChartService',
+            function () {
+                return new ChartService();
             }
         );
 

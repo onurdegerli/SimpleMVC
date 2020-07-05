@@ -5,10 +5,12 @@ namespace Core\Databases\Mysql;
 use Core\Databases\Helpers;
 use Core\Databases\Repository;
 use PDO;
+use PDOStatement;
 
 class MysqlRepository implements Repository
 {
     protected PDO $db;
+    private PDOStatement $stmt;
 
     use Helpers;
 
@@ -19,10 +21,10 @@ class MysqlRepository implements Repository
 
     public function getAll(string $table): array
     {
-        $sth = $this->db->prepare("SELECT * FROM $table");
-        $sth->execute();
+        $stmt = $this->db->prepare("SELECT * FROM $table");
+        $stmt->execute();
 
-        return $sth->fetchAll();
+        return $stmt->fetchAll();
     }
 
     public function get(string $table, int $id): array
@@ -48,9 +50,19 @@ class MysqlRepository implements Repository
 
     public function customQuery(string $query, array $params = [])
     {
-        $stmt = $this->db->prepare($query);
-        $stmt->execute($params);
+        $this->stmt = $this->db->prepare($query);
+        $this->stmt->execute($params);
 
-        return $stmt->fetch();
+        return $this;
+    }
+
+    public function one()
+    {
+        return $this->stmt->fetch();
+    }
+
+    public function all()
+    {
+        return $this->stmt->fetchAll();
     }
 }
